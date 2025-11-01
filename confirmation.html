@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de Commande - Beauty Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .confirmation-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .confirmation-icon {
+            color: #4CAF50;
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .confirmation-title {
+            color: #ff6b81;
+            margin-bottom: 20px;
+        }
+        
+        .order-details {
+            text-align: left;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .order-summary {
+            margin-top: 20px;
+        }
+        
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .total-price {
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 20px;
+            color: #ff6b81;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #ff6b81;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #ff4757;
+        }
+        
+        footer {
+            background: #222;
+            color: white;
+            padding: 30px 5%;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <div class="confirmation-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 class="confirmation-title">Merci pour votre commande !</h1>
+        <p>Votre commande a été enregistrée avec succès.</p>
+        <p>Un email de confirmation vous a été envoyé.</p>
+        
+        <div class="order-details">
+            <h2>Récapitulatif de votre commande</h2>
+            <div id="orderSummary" class="order-summary">
+                <!-- Les produits seront ajoutés dynamiquement par JavaScript -->
+            </div>
+            <div class="total-price">
+                Total: <span id="orderTotal">0</span> dt
+            </div>
+        </div>
+        
+        <div class="customer-info">
+            <h3>Informations de livraison</h3>
+            <div id="customerDetails">
+                <!-- Les infos client seront ajoutées dynamiquement -->
+            </div>
+        </div>
+        
+        <a href="index.html" class="btn">Retour à l'accueil</a>
+    </div>
+
+    <footer>
+        <p>© 2023 Beauty Shop - Tous droits réservés</p>
+    </footer>
+
+    <script>
+        // Récupérer la commande depuis le localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const order = JSON.parse(localStorage.getItem('currentOrder'));
+            
+            if (!order) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Afficher les produits
+            const orderSummary = document.getElementById('orderSummary');
+            let total = 0;
+            
+            order.products.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.className = 'product-item';
+                productElement.innerHTML = `
+                    <span>${product.name} (x${product.quantity})</span>
+                    <span>${product.price * product.quantity} dt</span>
+                `;
+                orderSummary.appendChild(productElement);
+                total += product.price * product.quantity;
+            });
+            
+            // Afficher le total
+            document.getElementById('orderTotal').textContent = total;
+            
+            // Afficher les infos client
+            const customerDetails = document.getElementById('customerDetails');
+            customerDetails.innerHTML = `
+                <p><strong>Nom:</strong> ${order.customer.firstName} ${order.customer.lastName}</p>
+                <p><strong>Email:</strong> ${order.customer.email}</p>
+                <p><strong>Téléphone:</strong> ${order.customer.phone}</p>
+                <p><strong>Adresse:</strong> ${order.shipping.address}, ${order.shipping.zipCode} ${order.shipping.city}</p>
+                <p><strong>Méthode de paiement:</strong> ${getPaymentMethodName(order.payment)}</p>
+            `;
+            
+            // Optionnel: Vider le panier après confirmation
+            localStorage.removeItem('cart');
+        });
+        
+        function getPaymentMethodName(method) {
+            const methods = {
+                'creditCard': 'Carte de crédit',
+                'paypal': 'PayPal',
+                'bankTransfer': 'Virement bancaire',
+                'cashOnDelivery': 'Paiement à la livraison'
+            };
+            return methods[method] || method;
+        }
+    </script>
+</body>
+</html>
