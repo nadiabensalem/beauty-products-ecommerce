@@ -23,11 +23,11 @@ Ce projet intègre les fonctionnalités essentielles d'un site e-commerce modern
 
 ## 👩‍💻 Auteure
 
-**Nedia Ben Salem**  
+**Nadia Ben Salem**  
 Étudiante L3 Génie Logiciel & SI - Iteam University
 
 - 📧 Email : bnedya@gmail.com
-- 💼 LinkedIn : [nedia-ben-salem](https://www.linkedin.com/in/nedia-ben-salem-ba949138b)
+- 💼 LinkedIn : [nadia-ben-salem](https://www.linkedin.com/in/nadia-ben-salem-ba949138b)
 - ☁️ Certifiée Microsoft Azure Fundamentals (AZ-900)
 
 ## 📝 Contexte
